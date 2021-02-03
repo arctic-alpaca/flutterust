@@ -45,6 +45,11 @@ description = "Runs the rust compiler."
 category = "Build"
 dependencies = ["android"]
 
+[tasks.build-windows]
+description = "Runs the rust compiler."
+category = "Build"
+dependencies = ["windows"]
+
 [tasks.build.mac]
 description = "Runs the rust compiler."
 category = "Build"
@@ -89,6 +94,64 @@ script = [
     """,
 ]
 dependencies = ["restore-crate-type"]
+
+[tasks.windows]
+description = "Build windows targets."
+category = "Build"
+dependencies = [
+    "setup-crate-type-windows",
+    "current-windows-host-build",
+    "current-windows-host-build-release",
+    "post-windows"
+]
+
+[tasks.current-windows-host-build]
+private = true
+condition = { env_true = ["DEV"]}
+command = "cargo"
+args = [
+  "build",
+]
+
+[tasks.current-windows-host-build-release]
+private = true
+condition = { env_true = ["RELEASE"]}
+command = "cargo"
+args = [
+  "build",
+  "--release"
+]
+
+[tasks.post-windows]
+category = "Build"
+dependencies = [
+    "post-windows-debug",
+    "post-windows-release",
+]
+
+
+[tasks.post-windows-debug]
+condition = { env_true = ["DEV"]}
+script_runner = "@duckscript"
+script = [
+    """
+    cp ${CARGO_MAKE_WORKSPACE_WORKING_DIRECTORY}/target/debug/${CARGO_MAKE_CRATE_FS_NAME}.dll \
+    ${CARGO_MAKE_WORKSPACE_WORKING_DIRECTORY}/packages/${CARGO_MAKE_CRATE_FS_NAME}/windows/${CARGO_MAKE_CRATE_FS_NAME}.dll
+    """,
+]
+dependencies = ["restore-crate-type"]
+
+[tasks.post-windows-release]
+condition = { env_true = ["RELEASE"]}
+script_runner = "@duckscript"
+script = [
+    """
+    cp ${CARGO_MAKE_WORKSPACE_WORKING_DIRECTORY}/target/debug/${CARGO_MAKE_CRATE_FS_NAME}.dll \
+    ${CARGO_MAKE_WORKSPACE_WORKING_DIRECTORY}/packages/${CARGO_MAKE_CRATE_FS_NAME}/windows/${CARGO_MAKE_CRATE_FS_NAME}.dll
+    """,
+]
+dependencies = ["restore-crate-type"]
+
 
 [tasks.android]
 description = "Build android targets."
@@ -237,6 +300,11 @@ private = true
 env = { TARGET_OS = "android" }
 run_task = "setup-crate-type"
 
+[tasks.setup-crate-type-windows]
+private = true
+env = { TARGET_OS = "windows" }
+run_task = "setup-crate-type"
+
 [tasks.setup-crate-type-ios]
 private = true
 env = { TARGET_OS = "ios" }
@@ -251,8 +319,11 @@ script = [
     crate_type = set ""
     os = get_env TARGET_OS
     is_android = eq ${os} "android"
+    is_windows = eq ${os} "windows"
     is_ios = eq ${os} "ios"
     if ${is_android}
+      crate_type = set "cdylib"
+    elseif ${is_windows}
       crate_type = set "cdylib"
     elseif ${is_ios}
       crate_type = set "staticlib"
@@ -274,8 +345,11 @@ script = [
     crate_type = set ""
     os = get_env TARGET_OS
     is_android = eq ${os} "android"
+    is_windows = eq ${os} "windows"
     is_ios = eq ${os} "ios"
     if ${is_android}
+      crate_type = set "cdylib"
+    elseif ${is_windows}
       crate_type = set "cdylib"
     elseif ${is_ios}
       crate_type = set "staticlib"
