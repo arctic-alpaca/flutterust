@@ -3,8 +3,6 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  adder
-  scrap
 )
 
 set(PLUGIN_BUNDLED_LIBRARIES)

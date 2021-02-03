@@ -9,7 +9,6 @@ final DynamicLibrary _dl = _open();
 /// Reference to the Dynamic Library, it should be only used for low-level access
 final DynamicLibrary dl = _dl;
 DynamicLibrary _open() {
-  if (Platform.isWindows) return DynamicLibrary.open('packages/adder_ffi/windows/adder_ffi.dll');
   if (Platform.isAndroid) return DynamicLibrary.open('libadder_ffi.so');
   if (Platform.isIOS) return DynamicLibrary.executable();
   throw UnsupportedError('This platform is not supported.');

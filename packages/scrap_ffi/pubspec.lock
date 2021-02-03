@@ -67,11 +67,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_web_plugins:
-    dependency: "direct main"
-    description: flutter
-    source: sdk
-    version: "0.0.0"
   isolate:
     dependency: "direct main"
     description:
@@ -79,13 +74,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.3"
-  js:
-    dependency: transitive
-    description:
-      name: js
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.6.3-nullsafety.3"
   matcher:
     dependency: transitive
     description:
@@ -170,4 +158,4 @@ packages:
     version: "2.1.0-nullsafety.5"
 sdks:
   dart: ">=2.12.0-0.0 <3.0.0"
-  flutter: ">=1.20.0"
+  flutter: ">=1.10.0"

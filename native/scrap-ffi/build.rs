@@ -18,6 +18,7 @@ fn main() {
     let config = DynamicLibraryConfig {
         ios: DynamicLibraryCreationMode::Executable.into(),
         android: DynamicLibraryCreationMode::open("libscrap_ffi.so").into(),
+        windows: DynamicLibraryCreationMode::open("packages/scrap_ffi/windows/scrap_ffi.dll").into(),
         ..Default::default()
     };
     // load the c header file, with config and lib name

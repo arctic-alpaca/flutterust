@@ -15,6 +15,7 @@ fn main() {
     let config = DynamicLibraryConfig {
         ios: DynamicLibraryCreationMode::Executable.into(),
         android: DynamicLibraryCreationMode::open("libadder_ffi.so").into(),
+        windows: DynamicLibraryCreationMode::open("packages/adder_ffi/windows/adder_ffi.dll").into(),
         ..Default::default()
     };
     // load the c header file, with config and lib name
