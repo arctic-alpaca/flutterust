@@ -68,7 +68,7 @@ jobs:
 
       - name: Setup Android SDK (Android only)
         if: matrix.os == 'ubuntu-latest'
-        uses: android-actions/setup-android@v1
+        uses: android-actions/setup-android@v2
 
       - name: Cache NDK (Android only)
         if: matrix.os == 'ubuntu-latest'
@@ -132,7 +132,6 @@ jobs:
           prerelease: false
         env:
           GITHUB_TOKEN: '${{secrets.GITHUB_TOKEN}}'
-          
 
       - name: Upload Release (Android)
         id: upload-release-asset
